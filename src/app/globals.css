@@ -1,0 +1,497 @@
+
+:root {
+  --fundo: #f8fafc;
+  --superficie: #ffffff;
+  --borda: #e2e8f0;
+  --texto: #0f172a;
+  --texto-suave: #64748b;
+  --primaria: #4f46e5;
+  --primaria-hover: #4338ca;
+  --primaria-fundo: #eef2ff;
+  --perigo: #e11d48;
+  --perigo-borda: #fecdd3;
+  --perigo-fundo: #fff1f2;
+  --sucesso: #047857;
+  --sucesso-borda: #a7f3d0;
+  --sucesso-fundo: #ecfdf5;
+  --raio: 10px;
+  --sombra: 0 1px 2px rgb(15 23 42 / 5%);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* O fundo da barra do topo (.barra::before) passa da largura da tela; sem
+   isto a página ganharia rolagem horizontal. Precisa estar em html e body. */
+html,
+body {
+  overflow-x: clip;
+}
+
+body {
+  margin: 0;
+  background: var(--fundo);
+  color: var(--texto);
+  line-height: 1.5;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: 1.6rem;
+  letter-spacing: -0.02em;
+}
+
+.container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px 56px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--primaria);
+  outline-offset: 2px;
+}
+
+/* Barra do topo: busca + nova tarefa */
+
+.barra {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+}
+
+.barra::before {
+  content: "";
+  position: absolute;
+  inset: 0 -100vw;
+  z-index: -1;
+  border-bottom: 1px solid var(--borda);
+  background: var(--superficie);
+}
+
+.busca {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 8px;
+  max-width: 340px;
+  padding: 0 12px;
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  background: var(--fundo);
+  color: var(--texto-suave);
+}
+
+.busca:focus-within {
+  border-color: var(--primaria);
+  background: var(--superficie);
+  box-shadow: 0 0 0 3px var(--primaria-fundo);
+}
+
+.busca input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 0;
+  border: 0;
+  outline: 0;
+  background: none;
+  color: var(--texto);
+  font: inherit;
+  font-size: 0.9rem;
+}
+
+/* Cabeçalho da listagem */
+
+.cabecalho {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 28px 0 20px;
+}
+
+.cabecalho h1 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.cabecalho__subtitulo {
+  margin-top: 2px;
+  color: var(--texto-suave);
+}
+
+.selo {
+  padding: 2px 10px;
+  border: 1px solid var(--borda);
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: var(--texto-suave);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.filtro {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+}
+
+.link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--primaria);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* Botões */
+
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  background: var(--superficie);
+  box-shadow: var(--sombra);
+  color: var(--texto);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.botao:hover {
+  background: var(--fundo);
+}
+
+.botao:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.botao--primario {
+  padding: 9px 16px;
+  border-color: var(--primaria);
+  background: var(--primaria);
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.botao--primario:hover {
+  border-color: var(--primaria-hover);
+  background: var(--primaria-hover);
+}
+
+.botao--perigo {
+  border-color: var(--perigo-borda);
+  color: var(--perigo);
+}
+
+.botao--perigo:hover {
+  background: var(--perigo-fundo);
+}
+
+/* Lista */
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transition: opacity 0.15s;
+}
+
+.lista[aria-busy="true"],
+.tarefa[aria-busy="true"] {
+  opacity: 0.55;
+}
+
+.tarefa {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px;
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  background: var(--superficie);
+  box-shadow: var(--sombra);
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+
+.tarefa:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgb(15 23 42 / 6%);
+}
+
+.tarefa__conteudo {
+  min-width: 0;
+}
+
+.tarefa__titulo {
+  font-size: 1.05rem;
+  overflow-wrap: anywhere;
+}
+
+.tarefa__descricao {
+  margin-top: 2px;
+  color: var(--texto-suave);
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+}
+
+.tarefa__data {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  color: var(--texto-suave);
+  font-size: 0.8rem;
+}
+
+.tarefa__acoes {
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.lista__rodape {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.texto-suave {
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+}
+
+.texto-erro {
+  color: var(--perigo);
+  font-size: 0.85rem;
+}
+
+/* Estados (carregando, vazio, erro) */
+
+.estado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 28px;
+  padding: 48px 16px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  color: var(--texto-suave);
+  text-align: center;
+}
+
+.cabecalho + .estado {
+  margin-top: 0;
+}
+
+.estado h1 {
+  color: var(--texto);
+}
+
+.estado--erro {
+  border-color: var(--perigo-borda);
+  background: var(--perigo-fundo);
+  color: var(--perigo);
+}
+
+/* Páginas de criação e edição */
+
+.pagina-formulario {
+  max-width: 640px;
+  margin: 0 auto;
+  padding-top: 28px;
+}
+
+.pagina-formulario h1 {
+  margin: 12px 0 20px;
+}
+
+.voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.voltar:hover {
+  color: var(--primaria);
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 24px;
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  background: var(--superficie);
+  box-shadow: var(--sombra);
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.campo label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.campo input,
+.campo textarea {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  background: var(--superficie);
+  color: var(--texto);
+  font: inherit;
+  font-size: 0.95rem;
+}
+
+.campo input:focus,
+.campo textarea:focus {
+  border-color: var(--primaria);
+  outline: 0;
+  box-shadow: 0 0 0 3px var(--primaria-fundo);
+}
+
+.campo textarea {
+  resize: vertical;
+}
+
+.campo [aria-invalid="true"] {
+  border-color: var(--perigo);
+}
+
+.formulario__acoes {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.alerta {
+  padding: 10px 12px;
+  border: 1px solid var(--perigo-borda);
+  border-radius: 8px;
+  background: var(--perigo-fundo);
+  color: var(--perigo);
+  font-size: 0.9rem;
+}
+
+/* Avisos (toasts) */
+
+.avisos {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  left: 16px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.aviso {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 420px;
+  padding: 10px 14px;
+  border: 1px solid;
+  border-radius: var(--raio);
+  box-shadow: 0 8px 24px rgb(15 23 42 / 12%);
+  font-size: 0.9rem;
+  font-weight: 500;
+  pointer-events: auto;
+}
+
+.aviso svg {
+  flex-shrink: 0;
+}
+
+.aviso--sucesso {
+  border-color: var(--sucesso-borda);
+  background: var(--sucesso-fundo);
+  color: var(--sucesso);
+}
+
+.aviso--erro {
+  border-color: var(--perigo-borda);
+  background: var(--perigo-fundo);
+  color: var(--perigo);
+}
+
+.aviso__fechar {
+  display: flex;
+  padding: 2px;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .tarefa {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .barra .botao--primario {
+    padding: 9px 12px;
+  }
+}
